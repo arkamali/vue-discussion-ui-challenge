@@ -80,9 +80,9 @@ function relativeDays(timestamp: number) {
     </div>
 
     <div
-      class="discussion"
       v-for="(discussion, index) in discussions"
       :key="index"
+      class="discussion"
     >
       <div class="flex-container">
         <div class="item1">
