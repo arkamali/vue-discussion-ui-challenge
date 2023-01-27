@@ -1,101 +1,43 @@
 <script setup lang="ts">
-import type IDiscussion from "@/types/types";
+import { timeAgo } from "../functions/functions";
+import type { IDiscussion } from "@/types/types";
+
 import Avatar from "./Base/Avatar.vue";
 import Like from "./Base/Like.vue";
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
+import Comments from "./Comments.vue";
+import NewComment from "./NewComment.vue";
 
 defineProps<{
   discussions: IDiscussion[];
 }>();
-
-function relativeDays(timestamp: number) {
-  const now = Date.now();
-  const diff = now - timestamp;
-
-  const dateFormat = new Date(timestamp);
-
-  TimeAgo.addDefaultLocale(en);
-
-  // Create formatter (English).
-  const timeAgo = new TimeAgo("en-US");
-
-  return timeAgo.format(dateFormat);
-  // "just now"
-
-  /*
-  console.log(
-    "Date: " +
-      dateFormat.getDate() +
-      "/" +
-      (dateFormat.getMonth() + 1) +
-      "/" +
-      dateFormat.getFullYear() +
-      " " +
-      dateFormat.getHours() +
-      ":" +
-      dateFormat.getMinutes() +
-      ":" +
-      dateFormat.getSeconds()
-  );
-  
-  const dateObj = new Date(timestamp);
-  const minute = dateObj.getUTCMinutes();
-  const hour = dateObj.getUTCHours();
-  const day = dateObj.getDay();
-
-  return (
-    "-" +
-    hour +
-    "-" +
-    minute +
-    " " +
-    day +
-    "-" +
-    dateObj.getMonth() +
-    "-" +
-    dateObj.getUTCFullYear()
-  );
-
-
-  // less than 1 hour
-  if (diff < 3600000) {
-    return dateFormat.getMinutes() + "min ago";
-  }
-  // 1 to 24 hour
-  else if (diff > 3600000 && diff < 86400000) {
-    return dateFormat.getHours() + "h ago";
-  }
-
-  return dateFormat.getDate() + "d ago";
-  */
-}
 </script>
 
 <template>
   <div class="discussions">
-    <div class="new">
-      <Avatar :src="undefined" name="Alireza Kamali" />
-      <input placeholder="Start a discussion" />
-    </div>
+    <NewComment />
 
-    <div
-      v-for="(discussion, index) in discussions"
-      :key="index"
-      class="discussion"
-    >
+    <div v-for="(discussion, index) in discussions" :key="index">
       <div class="flex-container">
-        <div class="item1">
+        <div
+          class="avatar-holder"
+          :class="[{ 'have-replies': discussion.replies.length }]"
+        >
           <Avatar :src="discussion.user.avatar" :name="discussion.user.name" />
         </div>
-        <div class="item2">
+
+        <div class="details-holder">
           <span class="name">{{ discussion.user.name }}</span>
-          <span class="date">{{ relativeDays(discussion.date) }}</span>
-          <br />
+          <span class="date">{{ timeAgo(discussion.date) }}</span>
           <div class="text">{{ discussion.text }}</div>
-          <br />
+
           <Like :likes="discussion.likes" :i-liked-it="discussion.iLikedIt" />
-          <div class="reply"><span>Reply</span></div>
+          <button class="reply">Reply</button>
+
+          <Comments
+            v-if="discussion.replies.length"
+            :discussions="discussion.replies"
+            :reply-id="discussion.id"
+          />
         </div>
       </div>
     </div>
@@ -105,22 +47,29 @@ function relativeDays(timestamp: number) {
 <style scoped>
 .flex-container {
   display: flex;
-
-  height: 100%;
-  padding: 15px;
-  gap: 5px;
+  gap: 1rem;
+  justify-items: stretch;
+  border-bottom: 2px solid #e2e9ee;
+  padding: 20px;
 }
 
-.item1 {
-  /* flex:0 1 auto; */
-  align-self: auto;
+.avatar-holder {
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-.item2 {
-  /* flex:1 1 auto; */
-  flex-grow: 1;
-  flex-shrink: 1;
-  align-self: flex-start;
+.avatar-holder.have-replies::before {
+  content: "";
+  position: absolute;
+  border-right: 3px solid #eef2f5;
+  top: 65px;
+  right: 38px;
+  bottom: 0;
+}
+
+.details-holder {
 }
 
 .discussions {
@@ -128,40 +77,14 @@ function relativeDays(timestamp: number) {
   border-radius: 10px 10px 0 0;
   margin-top: 3px;
   border-bottom: 2px solid #e2e9ee;
-}
-
-.new {
-  background: #fafbfc;
-  padding: 18px;
-  border-radius: 10px 10px 0 0;
-  border-bottom: 2px solid #e2e9ee;
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-content: stretch;
-  align-items: center;
-}
-
-.new input {
-  border: 2px solid #e7ecf0;
-  border-radius: 5px;
-
-  height: 10px;
-  padding: 18px;
   font-size: 1rem;
-
-  flex: 1 1 auto;
-  align-self: auto;
-}
-
-.discussion {
-  background-color: #ffffff;
 }
 
 .text {
   line-height: 1.5;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: #4c5760;
 }
 
 .item {
@@ -171,6 +94,8 @@ function relativeDays(timestamp: number) {
 .name {
   font-weight: bold;
   padding-right: 8px;
+  color: #404348;
+  font-size: 1.1rem;
 }
 
 .date {
@@ -185,5 +110,9 @@ function relativeDays(timestamp: number) {
   cursor: pointer;
   display: inline-flex;
   font-weight: bold;
+  margin: 0 0 0 15px;
+  position: absolute;
+  border: 0;
+  background: transparent;
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type IDiscussion from "@/types/types";
+import type { IDiscussion } from "@/types/types";
 import Discussion from "./components/Discussion.vue";
 
 const discussions: IDiscussion[] = [
@@ -72,21 +72,12 @@ const discussions: IDiscussion[] = [
   <main>
     <Discussion :discussions="discussions" />
   </main>
-  <main>
-    <img
-      src="https://raw.githubusercontent.com/dnj/developer-recruitment/master/challenges/5/design/discussion.png"
-    />
-  </main>
 </template>
 
 <style>
 main {
   max-width: 700px;
   margin: 0 auto;
-
-  display: inline-block;
-  width: 700px;
-  vertical-align: top;
 }
 
 body {

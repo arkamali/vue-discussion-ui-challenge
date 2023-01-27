@@ -5,7 +5,7 @@ defineProps<{
 }>();
 
 function like() {
-  console.log("like");
+  alert("like");
 }
 </script>
 
@@ -56,18 +56,16 @@ function like() {
   border-radius: 25px;
   background-color: #f4f5fa;
   color: #000;
-  /*display: flex;*/
   justify-content: center;
   align-items: center;
-  height: 35px;
-  min-width: 60px;
-  max-width: 70px;
+  height: 38px;
+  min-width: 70px;
   cursor: pointer;
   display: inline-flex;
 }
 
 .like span {
-  margin-left: 4px;
+  margin-left: 5px;
 }
 
 .is-liked {

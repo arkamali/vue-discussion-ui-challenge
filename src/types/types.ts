@@ -1,9 +1,9 @@
-interface IUser {
+export interface IUser {
   name: string;
   avatar?: string;
 }
 
-interface IComment {
+export interface IComment {
   id: number;
   date: number; // unix timestamp in milliseconds.
   user: IUser;
@@ -12,10 +12,10 @@ interface IComment {
   iLikedIt: boolean;
 }
 
-export default interface IDiscussion extends IComment {
+export interface IDiscussion extends IComment {
   replies: IComment[];
 }
 
-export default interface IProps {
+export interface IProps {
   comments: IComment[];
 }

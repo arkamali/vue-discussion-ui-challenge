@@ -7,11 +7,11 @@ const props = defineProps<{
 }>();
 
 const nameLetter = computed(() => {
-  const nameSplited = props.name.split(" ");
+  const nameSplitted = props.name.split(" ");
   return (
-    nameSplited[0].substring(0, 1) +
+    nameSplitted[0].substring(0, 1) +
     "" +
-    nameSplited[nameSplited.length - 1].substring(0, 1)
+    nameSplitted[nameSplitted.length - 1].substring(0, 1)
   );
 });
 </script>
@@ -34,12 +34,10 @@ const nameLetter = computed(() => {
   color: #1d6ca5;
   font-size: 1.2rem;
   font-weight: bold;
-
+  margin-right: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  margin: 0 15px;
 }
 
 .avatar img {

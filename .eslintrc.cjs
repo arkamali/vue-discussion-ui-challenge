@@ -24,7 +24,7 @@ module.exports = {
     "vue/multi-word-component-names": [
       "error",
       {
-        ignores: ["Discussion", "Avatar", "Like"],
+        ignores: ["Discussion", "Avatar", "Like", "Comments"],
       },
     ],
   },
